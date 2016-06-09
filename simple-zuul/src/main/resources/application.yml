@@ -1,0 +1,28 @@
+# info:
+#   component: Simple Zuul Server
+  
+server:
+  port: 9072
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+zuul:
+  routes:
+    simple-service: 
+       path: /simple-service/**
+       serviceId: simple-service
+    complex-service:
+       path: /complex-service/**
+       serviceId: complex-service
+
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.web: DEBUG

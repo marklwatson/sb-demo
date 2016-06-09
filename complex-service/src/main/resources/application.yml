@@ -1,0 +1,8 @@
+server:
+  port: 9076
+
+complex-data:
+  owners:
+    - Mark:44
+    - Jake:55
+    - Henry:35

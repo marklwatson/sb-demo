@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: simple-zuul
+  cloud:
+    config:
+      uri: http://localhost:9070
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9071/eureka/

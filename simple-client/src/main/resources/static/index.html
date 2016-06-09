@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<script>
+		var app = angular.module('clientApp', []);
+
+		app.controller('clientController', function($scope, $http) {
+			$scope.ownerName = '';
+			$scope.complexObjList = {};
+			$scope.complexObj = {};
+			$scope.feedback = '';
+			$scope.getComplexObjectList = function() {
+				var url = 'complex-service';
+				$http.get(url).then(
+					function(response){
+						$scope.complexObjList = response.data;
+						$scope.feedback = "";
+					},
+					function(err){
+						$scope.feedback = "Failure, dude: " + err.data.message;
+					}
+				);
+			};
+			$scope.getComplexObject = function(own) {
+				$scope.ownerName = own;
+				var url = 'complex-service/ownerName/' + $scope.ownerName;
+				$http.get(url).then(
+					function(response){
+						$scope.complexObj = response.data;
+						$scope.feedback = "";
+					},
+					function(err){
+						$scope.feedback = "Failure, dude: " + err.data.message;
+						$scope.complexObj = {};
+					}
+				);
+			};
+			$scope.getComplexObjectList();
+		});
+
+
+	</script>
+</head>
+<body>
+	<h1>Complex Object</h1>
+
+	<div data-ng-app="clientApp" data-ng-controller="clientController" align="center">
+		<table align="center">
+			<tr data-ng-repeat="co in complexObjList">
+				<td>{{co.ownerName}}</td>
+				<td>{{co.ownershipLevel}}</td>
+				<td><button data-ng-click="getComplexObject(co.ownerName);">Get</button></td></td>
+			</tr>
+		</table>
+		
+		<table align="center">
+			<tr>
+				<td>Owner:</td>
+				<td>{{complexObj.ownerName}}</td>
+			</tr>
+			<tr>
+				<td>Level:</td>
+				<td>{{complexObj.ownershipLevel}}</td>
+			</tr>
+			<tr>
+				<td>Object:</td>
+				<td>
+					<table>
+						<tr>
+							<td>Name:</td>
+							<td>{{complexObj.simpleObject.name}}</td>
+						</tr>
+						<tr>
+							<td>Name:</td>
+							<td>{{complexObj.simpleObject.description}}</td>
+						</tr>
+						<tr>
+							<td>Name:</td>
+							<td>{{complexObj.simpleObject.age}}</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr></tr>
+			<!--			
+			<tr>
+				<td colspan="2"><input type="text" ng-model="ownerName" size="60">
+				<button data-ng-click="getComplexObject();">Get</button></td>
+			</tr>
+			-->			
+		</table>
+{{feedback}}
+	</div>
+</body>
